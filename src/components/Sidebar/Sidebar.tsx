@@ -14,6 +14,7 @@ const links = [
   { href: '/admin', label: 'Administrativo' },
   { href: '/clientes', label: 'Clientes' },
   { href: '/funcionarios', label: 'Funcionários' },
+  { href: '/locations', label: 'Locations' },
   { href: '/agendamentos', label: 'Agendamentos' },
   { href: '/treinos', label: 'Treinos' },
 ];
