@@ -98,3 +98,12 @@
 .footerLink a:focus-visible {
   color: #bfdbfe;
 }
+
+.fieldError {
+  color: #fca5a5;
+  font-size: 0.8rem;
+}
+
+.inputError {
+  border-color: #f87171;
+}

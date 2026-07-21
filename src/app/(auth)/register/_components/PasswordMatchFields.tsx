@@ -8,7 +8,11 @@ import { CheckIcon, XMarkIcon } from "@/images";
 import formStyles from "../../auth-form.module.css";
 import styles from "./PasswordMatchFields.module.css";
 
-export const PasswordMatchFields = () => {
+interface PasswordMatchFieldsProps {
+  error?: string;
+}
+
+export const PasswordMatchFields = ({ error }: PasswordMatchFieldsProps) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -50,7 +54,7 @@ export const PasswordMatchFields = () => {
         />
       </label>
 
-      {passwordsMismatch && (
+      {(passwordsMismatch || (error && !hasConfirmValue)) && (
         <p role="alert" className={styles.mismatch}>
           Passwords do not match.
         </p>
