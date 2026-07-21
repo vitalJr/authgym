@@ -1,3 +1,29 @@
+# 5 Auth
+
+An authentication playground built with Next.js, exploring multiple sign-in methods against a real backend.
+
+> **Status: work in progress.** Features, structure, and the data model are still evolving.
+
+## What this project does
+
+- Sign in with **Google** (OAuth).
+- Sign up and sign in with **email/username + password**.
+- Show/hide password toggle and live password-match validation on the registration form.
+- Route protection — unauthenticated users are redirected away from private pages.
+- Animated, theme-aware login/registration UI.
+
+## Tech stack
+
+- [Next.js](https://nextjs.org) (App Router)
+- [React](https://react.dev)
+- [TypeScript](https://www.typescriptlang.org)
+- [NextAuth.js (Auth.js v5)](https://authjs.dev) — Google OAuth and Credentials providers
+- [Firebase](https://firebase.google.com) — Firebase Authentication (accounts) and Firestore (user profiles), accessed via the Admin SDK
+- CSS Modules
+- ESLint
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
