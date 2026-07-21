@@ -1,0 +1,121 @@
+.container {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 2rem 1rem;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0f172a, #1e1b4b, #1e3a8a, #0f172a);
+  background-size: 300% 300%;
+  animation: gradientShift 18s ease infinite;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+.orbOne {
+  top: -140px;
+  left: -120px;
+  width: 420px;
+  height: 420px;
+  background: #2563eb;
+  animation: floatOne 15s ease-in-out infinite;
+}
+
+.orbTwo {
+  right: -100px;
+  bottom: -150px;
+  width: 380px;
+  height: 380px;
+  background: #7c3aed;
+  animation: floatTwo 19s ease-in-out infinite;
+}
+
+.orbThree {
+  top: 35%;
+  right: 12%;
+  width: 260px;
+  height: 260px;
+  background: #06b6d4;
+  animation: floatThree 13s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes floatOne {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, 60px) scale(1.1);
+  }
+}
+
+@keyframes floatTwo {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-40px, -30px) scale(1.08);
+  }
+}
+
+@keyframes floatThree {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-30px, 45px) scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container,
+  .orb {
+    animation: none;
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 2rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  color: #ffffff;
+}
