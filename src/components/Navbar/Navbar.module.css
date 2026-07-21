@@ -6,6 +6,10 @@
   background-color: #1f2937;
 }
 
+.navbarWithUser {
+  padding: 1.5rem 1.5rem;
+}
+
 .list {
   display: flex;
   align-items: center;
@@ -22,7 +26,9 @@
   font-weight: 500;
   padding: 0.5rem 0.25rem;
   border-bottom: 2px solid transparent;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .link:hover,

@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { Button } from '@/components/Button/Button';
 
 import styles from './Navbar.module.css';
+import { useSession } from 'next-auth/react';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -20,36 +21,35 @@ interface NavProps {
 
 export const Navbar = ({ userLoggedIn, logout }: NavProps) => {
   const pathname = usePathname();
+  const session = useSession();
 
   return (
     <nav className={styles.navbar} aria-label="Main navigation">
-      <ul className={styles.list}>
-        {links.map(({ href, label }) => {
-          const isActive = pathname === href;
+      {!userLoggedIn && (
+        <ul className={styles.list}>
+          {links.map(({ href, label }) => {
+            const isActive = pathname === href;
 
-          return (
-            <li key={href}>
-              <Link
-                href={href}
-                className={
-                  isActive ? `${styles.link} ${styles.linkActive}` : styles.link
-                }
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+            return (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className={
+                    isActive
+                      ? `${styles.link} ${styles.linkActive}`
+                      : styles.link
+                  }
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
-      {userLoggedIn ? (
-        <form action={logout}>
-          <Button type="submit" variant="secondary">
-            Logout
-          </Button>
-        </form>
-      ) : (
+      {!userLoggedIn && (
         <Button href="/login" variant="primary">
           Login
         </Button>

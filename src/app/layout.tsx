@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar/Navbar';
+import { Sidebar } from '@/components/Sidebar/Sidebar';
 import { auth, signOut } from 'auth';
 
 import { SessionProvider } from 'next-auth/react';
@@ -41,8 +42,13 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <SessionProvider>
-          <Navbar userLoggedIn={!!session?.user?.name} logout={logout} />
-          {children}
+          {!session?.user.name && (
+            <Navbar userLoggedIn={!!session?.user?.name} logout={logout} />
+          )}
+          <div className="flex flex-1">
+            {session?.user && <Sidebar user={session.user} logout={logout} />}
+            <div className="flex-1">{children}</div>
+          </div>
         </SessionProvider>
       </body>
     </html>
