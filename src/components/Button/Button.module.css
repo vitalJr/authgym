@@ -47,3 +47,13 @@
   background-color: color-mix(in srgb, var(--foreground) 8%, transparent);
   border-color: var(--foreground);
 }
+
+.danger {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+.danger:hover,
+.danger:focus-visible {
+  background-color: #b91c1c;
+}

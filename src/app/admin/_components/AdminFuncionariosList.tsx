@@ -6,28 +6,20 @@ import { Button } from "@/components/Button/Button";
 import { Modal } from "@/components/Modal/Modal";
 import type { Funcionario } from "@/types/funcionario";
 
-import { mockFuncionarios } from "../_mock";
+import { addAdminAction, removeAdminAction } from "../_actions";
 import styles from "./AdminFuncionariosList.module.css";
 
-export const AdminFuncionariosList = () => {
-  const [funcionarios, setFuncionarios] = useState<Funcionario[]>(mockFuncionarios);
+interface AdminFuncionariosListProps {
+  funcionarios: Funcionario[];
+}
+
+export const AdminFuncionariosList = ({
+  funcionarios,
+}: AdminFuncionariosListProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const admins = funcionarios.filter((funcionario) => funcionario.isAdmin);
   const candidates = funcionarios.filter((funcionario) => !funcionario.isAdmin);
-
-  const setIsAdmin = (id: string, isAdmin: boolean) => {
-    setFuncionarios((current) =>
-      current.map((funcionario) =>
-        funcionario.id === id ? { ...funcionario, isAdmin } : funcionario,
-      ),
-    );
-  };
-
-  const handleAdd = (id: string) => {
-    setIsAdmin(id, true);
-    setModalOpen(false);
-  };
 
   return (
     <div>
@@ -49,13 +41,12 @@ export const AdminFuncionariosList = () => {
                 <span className={styles.email}>{funcionario.email}</span>
               </div>
 
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setIsAdmin(funcionario.id, false)}
-              >
-                Remove
-              </Button>
+              <form action={removeAdminAction}>
+                <input type="hidden" name="id" value={funcionario.id} />
+                <Button type="submit" variant="outline">
+                  Remove
+                </Button>
+              </form>
             </li>
           ))}
         </ul>
@@ -77,13 +68,12 @@ export const AdminFuncionariosList = () => {
                   <span className={styles.email}>{funcionario.email}</span>
                 </div>
 
-                <Button
-                  type="button"
-                  variant="primary"
-                  onClick={() => handleAdd(funcionario.id)}
-                >
-                  Add
-                </Button>
+                <form action={addAdminAction} onSubmit={() => setModalOpen(false)}>
+                  <input type="hidden" name="id" value={funcionario.id} />
+                  <Button type="submit" variant="primary">
+                    Add
+                  </Button>
+                </form>
               </li>
             ))}
           </ul>
