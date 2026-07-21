@@ -11,7 +11,7 @@ import styles from './Sidebar.module.css';
 
 const links = [
   { href: '/', label: 'Dashboard' },
-  { href: '/users', label: 'Users' },
+  { href: '/admin', label: 'Administrativo' },
   { href: '/clientes', label: 'Clientes' },
   { href: '/funcionarios', label: 'Funcionários' },
   { href: '/agendamentos', label: 'Agendamentos' },

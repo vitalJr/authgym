@@ -3,7 +3,7 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 
 import styles from "./Button.module.css";
 
-type Variant = "primary" | "secondary";
+type Variant = "primary" | "secondary" | "outline";
 
 type ButtonAsButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: Variant;
