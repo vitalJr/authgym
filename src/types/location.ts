@@ -18,3 +18,10 @@ export type LocationInput = {
   city: string;
   country: Country;
 };
+
+export type LocationUpdateInput = {
+  name: string;
+  description?: string;
+  city: string;
+  country: Country;
+};

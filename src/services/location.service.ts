@@ -1,5 +1,7 @@
+import { FieldValue } from "firebase-admin/firestore";
+
 import { db } from "@/lib/firebase";
-import type { Location, LocationInput } from "@/types/location";
+import type { Location, LocationInput, LocationUpdateInput } from "@/types/location";
 
 const LOCATIONS_COLLECTION = "locations";
 
@@ -32,4 +34,23 @@ export async function createLocation(
   await docRef.set(record);
 
   return { id: input.id, ...record };
+}
+
+export async function deleteLocation(id: string): Promise<void> {
+  await db.collection(LOCATIONS_COLLECTION).doc(id).delete();
+}
+
+export async function updateLocation(
+  id: string,
+  input: LocationUpdateInput,
+): Promise<void> {
+  await db
+    .collection(LOCATIONS_COLLECTION)
+    .doc(id)
+    .update({
+      name: input.name,
+      city: input.city,
+      country: input.country,
+      description: input.description ? input.description : FieldValue.delete(),
+    });
 }

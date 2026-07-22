@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Button } from "@/components/Button/Button";
 import { listLocations } from "@/services/location.service";
 
+import { LocationsList } from "./_components/LocationsList";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -22,27 +23,7 @@ export default async function LocationsPage() {
         </Button>
       </div>
 
-      {locations.length === 0 ? (
-        <p className={styles.empty}>No locations registered yet.</p>
-      ) : (
-        <ul className={styles.list}>
-          {locations.map((location) => (
-            <li key={location.id} className={styles.row}>
-              <div className={styles.info}>
-                <span className={styles.name}>{location.name}</span>
-                <span className={styles.meta}>
-                  {location.id} · {location.city}, {location.country}
-                </span>
-                {location.description && (
-                  <span className={styles.description}>
-                    {location.description}
-                  </span>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <LocationsList locations={locations} />
     </div>
   );
 }

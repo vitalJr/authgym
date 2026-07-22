@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
-import { createLocation } from "@/services/location.service";
-import type { Country } from "@/types/location";
+import { createLocation } from '@/services/location.service';
+import type { Country } from '@/types/location';
 
 export type CreateLocationState = {
   fieldErrors?: {
@@ -20,16 +20,15 @@ export type CreateLocationState = {
 
 export async function createLocationAction(
   _prevState: CreateLocationState,
-  formData: FormData,
+  formData: FormData
 ): Promise<CreateLocationState> {
-  const id = String(formData.get("id")).trim();
-  const name = String(formData.get("name")).trim();
-  const description = String(formData.get("description") ?? "").trim();
-  const city = String(formData.get("city")).trim();
-  const country = formData.get("country") as Country;
+  const id = String(formData.get('id')).trim();
+  const name = String(formData.get('name')).trim();
+  const description = String(formData.get('description') ?? '').trim();
+  const city = String(formData.get('city')).trim();
+  const country = formData.get('country') as Country;
 
   const values = { id, name, description, city, country };
-
   const location = await createLocation({
     id,
     name,
@@ -40,10 +39,10 @@ export async function createLocationAction(
 
   if (!location) {
     return {
-      fieldErrors: { id: "This ID is already in use." },
+      fieldErrors: { id: 'This ID is already in use.' },
       values,
     };
   }
 
-  redirect("/locations");
+  redirect('/locations');
 }
