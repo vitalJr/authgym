@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 import { Button } from "@/components/Button/Button";
 import { PasswordInput } from "@/components/PasswordInput/PasswordInput";
 import { Role } from "@/types/funcionario";
+import type { Funcionario } from "@/types/funcionario";
 import type { Location } from "@/types/location";
 
 import { createFuncionarioAction } from "../_actions";
@@ -17,12 +18,16 @@ const initialState: CreateFuncionarioState = {};
 
 interface FuncionarioFormProps {
   locations: Location[];
+  managers: Funcionario[];
 }
 
-export const FuncionarioForm = ({ locations }: FuncionarioFormProps) => {
+export const FuncionarioForm = ({ locations, managers }: FuncionarioFormProps) => {
   const [state, formAction, isPending] = useActionState(
     createFuncionarioAction,
     initialState,
+  );
+  const [isManagerRole, setIsManagerRole] = useState(
+    state.values?.role === Role.GERENTE,
   );
 
   return (
@@ -121,6 +126,9 @@ export const FuncionarioForm = ({ locations }: FuncionarioFormProps) => {
           name="role"
           required
           defaultValue={state.values?.role ?? ""}
+          onChange={(event) =>
+            setIsManagerRole(event.target.value === Role.GERENTE)
+          }
           className={formStyles.select}
         >
           <option value="" disabled>
@@ -155,11 +163,22 @@ export const FuncionarioForm = ({ locations }: FuncionarioFormProps) => {
 
       <label className={formStyles.field}>
         <span className={formStyles.label}>Manager</span>
-        <input
+        <select
           name="manager"
-          defaultValue={state.values?.manager}
-          className={formStyles.input}
-        />
+          required={!isManagerRole}
+          disabled={isManagerRole}
+          defaultValue={state.values?.manager ?? ""}
+          className={formStyles.select}
+        >
+          <option value="" disabled>
+            {isManagerRole ? "Not applicable" : "Select a manager"}
+          </option>
+          {managers.map((manager) => (
+            <option key={manager.id} value={manager.name}>
+              {manager.name}
+            </option>
+          ))}
+        </select>
       </label>
 
       <SalaryFields />

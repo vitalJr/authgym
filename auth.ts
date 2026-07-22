@@ -35,6 +35,7 @@ const config = {
       } else if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.role = user.role;
       }
 
       return token;
@@ -45,6 +46,7 @@ const config = {
       }
 
       session.user.username = token.username;
+      session.user.role = token.role;
       return session;
     },
   },

@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
-import { Avatar } from "@/components/Avatar/Avatar";
-import { Button } from "@/components/Button/Button";
-import { Drawer } from "@/components/Drawer/Drawer";
-import { Role } from "@/types/funcionario";
-import type { Funcionario } from "@/types/funcionario";
-import type { Location } from "@/types/location";
+import { Avatar } from '@/components/Avatar/Avatar';
+import { Button } from '@/components/Button/Button';
+import { Drawer } from '@/components/Drawer/Drawer';
+import { Role } from '@/types/funcionario';
+import type { Funcionario } from '@/types/funcionario';
+import type { Location } from '@/types/location';
 
 import {
   activateFuncionarioAccountAction,
   updateFuncionarioAction,
-} from "../_actions";
-import formStyles from "../_form.module.css";
-import styles from "./FuncionarioDetailPanel.module.css";
+} from '../_actions';
+import formStyles from '../_form.module.css';
+import styles from './FuncionarioDetailPanel.module.css';
 
 interface FuncionarioDetailPanelProps {
   funcionario: Funcionario;
@@ -27,10 +28,18 @@ export const FuncionarioDetailPanel = ({
   locations,
   onClose,
 }: FuncionarioDetailPanelProps) => {
+  const { data: session } = useSession();
+  const canActivateAccounts = session?.user?.role === Role.GERENTE;
+
   const [isEditing, setIsEditing] = useState(false);
   const [salary, setSalary] = useState(funcionario.salary);
   const [salaryMonths, setSalaryMonths] = useState(funcionario.salaryMonths);
   const annualEstimate = (salary * salaryMonths).toFixed(2);
+
+  const handlerUpdateEmployee = (formData: FormData): void => {
+    updateFuncionarioAction(formData);
+    onClose();
+  };
 
   const startEditing = () => {
     setSalary(funcionario.salary);
@@ -55,18 +64,20 @@ export const FuncionarioDetailPanel = ({
           <span>
             This account is pending activation and can&apos;t sign in yet.
           </span>
-          <form action={activateFuncionarioAccountAction}>
-            <input type="hidden" name="id" value={funcionario.id} />
-            <Button type="submit" variant="primary">
-              Activate account
-            </Button>
-          </form>
+          {canActivateAccounts && (
+            <form action={activateFuncionarioAccountAction}>
+              <input type="hidden" name="id" value={funcionario.id} />
+              <Button type="submit" variant="primary">
+                Activate account
+              </Button>
+            </form>
+          )}
         </div>
       )}
 
       <form
-        key={isEditing ? "editing" : "viewing"}
-        action={updateFuncionarioAction}
+        key={isEditing ? 'editing' : 'viewing'}
+        action={handlerUpdateEmployee}
         className={formStyles.form}
       >
         <input type="hidden" name="id" value={funcionario.id} />
@@ -120,7 +131,7 @@ export const FuncionarioDetailPanel = ({
             <span className={formStyles.label}>Blood type</span>
             <select
               name="tipoSanguineo"
-              defaultValue={funcionario.tipoSanguineo ?? ""}
+              defaultValue={funcionario.tipoSanguineo ?? ''}
               disabled={!isEditing}
               className={formStyles.select}
             >
@@ -175,7 +186,7 @@ export const FuncionarioDetailPanel = ({
           <span className={formStyles.label}>Manager</span>
           <input
             name="manager"
-            defaultValue={funcionario.manager ?? ""}
+            defaultValue={funcionario.manager ?? ''}
             disabled={!isEditing}
             className={formStyles.input}
           />

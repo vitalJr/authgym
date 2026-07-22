@@ -6,8 +6,10 @@ import type {
   RegisteredUser,
   UserRecord,
 } from '@/types/auth';
+import type { Funcionario } from '@/types/funcionario';
 
 const USERS_COLLECTION = 'users';
+const FUNCIONARIOS_COLLECTION = 'funcionarios';
 
 export async function loginWithCredentials(
   credentials: LoginCredentials
@@ -21,19 +23,37 @@ export async function loginWithCredentials(
 
   const userDoc = emailSnapshot.docs[0] ?? usernameSnapshot.docs[0];
 
-  console.log({ userDoc });
+  if (userDoc) {
+    const userData = userDoc.data() as UserRecord;
 
-  if (!userDoc) {
+    return {
+      id: userDoc.id,
+      name: userData.username,
+      email: userData.email,
+      username: userData.username,
+    };
+  }
+
+  const funcionarioSnapshot = await db
+    .collection(FUNCIONARIOS_COLLECTION)
+    .where('email', '==', credentials.identifier)
+    .limit(1)
+    .get();
+
+  const funcionarioDoc = funcionarioSnapshot.docs[0];
+
+  if (!funcionarioDoc) {
     return null;
   }
 
-  const userData = userDoc.data() as UserRecord;
+  const funcionarioData = funcionarioDoc.data() as Funcionario;
 
   return {
-    id: userDoc.id,
-    name: userData.username,
-    email: userData.email,
-    username: userData.username,
+    id: funcionarioDoc.id,
+    name: funcionarioData.name,
+    email: funcionarioData.email,
+    username: funcionarioData.name,
+    role: funcionarioData.role,
   };
 }
 

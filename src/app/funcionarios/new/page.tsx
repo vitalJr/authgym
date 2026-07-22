@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { listManagers } from "@/services/funcionario.service";
 import { listLocations } from "@/services/location.service";
 
 import { FuncionarioForm } from "./_components/FuncionarioForm";
@@ -11,12 +12,15 @@ export const metadata: Metadata = {
 };
 
 export default async function NewFuncionarioPage() {
-  const locations = await listLocations();
+  const [locations, managers] = await Promise.all([
+    listLocations(),
+    listManagers(),
+  ]);
 
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>New funcionario</h1>
-      <FuncionarioForm locations={locations} />
+      <FuncionarioForm locations={locations} managers={managers} />
     </div>
   );
 }

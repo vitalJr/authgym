@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 
+import { auth } from "auth";
+
 import {
   setFuncionarioAccountEnabled,
   setFuncionarioActive,
@@ -40,6 +42,12 @@ export async function deactivateFuncionarioAction(formData: FormData) {
 }
 
 export async function activateFuncionarioAccountAction(formData: FormData) {
+  const session = await auth();
+
+  if (session?.user?.role !== Role.GERENTE) {
+    throw new Error("Only managers can activate funcionario accounts.");
+  }
+
   const id = String(formData.get("id"));
 
   await setFuncionarioAccountEnabled(id, true);

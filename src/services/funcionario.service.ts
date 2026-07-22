@@ -1,4 +1,5 @@
 import { auth, db, storage } from "@/lib/firebase";
+import { Role } from "@/types/funcionario";
 import type {
   Funcionario,
   FuncionarioInput,
@@ -33,9 +34,23 @@ export async function listFuncionarios(): Promise<Funcionario[]> {
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export async function listManagers(): Promise<Funcionario[]> {
+  const snapshot = await db
+    .collection(FUNCIONARIOS_COLLECTION)
+    .where("active", "==", true)
+    .where("role", "==", Role.GERENTE)
+    .get();
+
+  return snapshot.docs
+    .map((doc) => ({ id: doc.id, ...doc.data() }) as Funcionario)
+    .sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export async function createFuncionario(
   input: FuncionarioInput,
 ): Promise<Funcionario | null> {
+  const isManager = input.role === Role.GERENTE;
+
   let firebaseUser;
 
   try {
@@ -43,7 +58,7 @@ export async function createFuncionario(
       email: input.email,
       password: input.password,
       displayName: input.name,
-      disabled: true,
+      disabled: !isManager,
     });
   } catch (error) {
     if (
@@ -70,7 +85,7 @@ export async function createFuncionario(
     ...(photoUrl ? { photoUrl } : {}),
     isAdmin: false,
     active: true,
-    accountEnabled: false,
+    accountEnabled: isManager,
     createdAt: new Date().toISOString(),
   };
 

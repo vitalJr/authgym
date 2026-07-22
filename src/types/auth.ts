@@ -1,3 +1,5 @@
+import type { Role } from "@/types/funcionario";
+
 export type LoginCredentials = {
   identifier: string;
   password: string;
@@ -8,6 +10,7 @@ export type AuthenticatedUser = {
   name: string;
   email: string;
   username?: string;
+  role?: Role;
 };
 
 export type RegisterInput = {
